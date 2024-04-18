@@ -11,11 +11,11 @@ import {
   moviesCredits,
   moviesDetails,
   moviesReviews,
-} from '../../src/reserv/api'
+} from '../../reserv/api'
 
 import css from './MovieDetailsPage.module.css'
 import MoviesCast from '../../components/MoviesCast/MoviesCast'
-import Loader from '../../components/Loader/Loader'
+// import Loader from '../../components/Loader/Loader'
 import MoviesReviews from '../../components/MoviesReviews/MoviesReviews'
 
 const MovieDetailsPage = () => {

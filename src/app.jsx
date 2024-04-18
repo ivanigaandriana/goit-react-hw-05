@@ -1,15 +1,15 @@
 import { Route, Routes } from 'react-router-dom'
 import { Suspense, lazy } from 'react'
 
-const HomePage = lazy(() => import('../pages/HomePage/HomePage'))
-const MoviesPage = lazy(() => import('../pages/MoviesPage/MoviesPage'))
+const HomePage = lazy(() => import('./pages/HomePage/HomePage'))
+const MoviesPage = lazy(() => import('./pages/MoviesPage/MoviesPage'))
 
-import Loader from '../components/Loader/Loader'
+import Loader from './components/Loader/Loader'
 // import css from './app.module.css'
 
-import NotFoundPage from '../pages/NotFoundPage/NotFoundPage'
-import MovieDetailsPage from '../pages/MovieDetailsPage/MovieDetailsPage'
-import Navigation from '../components/Navigation/Navigation'
+import NotFoundPage from './pages/NotFoundPage/NotFoundPage'
+import MovieDetailsPage from './pages/MovieDetailsPage/MovieDetailsPage'
+import Navigation from './components/Navigation/Navigation'
 
 function App() {
   return (

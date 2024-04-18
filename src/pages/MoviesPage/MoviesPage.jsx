@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { searchMovies } from '../../src/reserv/api'
+import { searchMovies } from '../../reserv/api'
 import Loader from '../../components/Loader/Loader'
 import ErrorMessage from '../../components/ErrorMessage/ErrorMessage'
 import MovieList from '../../components/MovieList/MovieList '
