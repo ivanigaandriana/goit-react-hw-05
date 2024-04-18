@@ -11,7 +11,7 @@ import {
   moviesCredits,
   moviesDetails,
   moviesReviews,
-} from '../../reserv/api'
+} from '../../src/reserv/api'
 
 import css from './MovieDetailsPage.module.css'
 import MoviesCast from '../../components/MoviesCast/MoviesCast'

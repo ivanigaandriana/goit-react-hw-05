@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 import MovieList from '../../components/MovieList/MovieList '
 import Loader from '../../components/Loader/Loader'
-import { trendingMovies } from '../../reserv/api'
+import { trendingMovies } from '../../src/reserv/api'
 
 const HomePage = () => {
   const [trendingMoviesList, setTrendingMoviesList] = useState([])
