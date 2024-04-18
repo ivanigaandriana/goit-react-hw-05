@@ -1,33 +1,34 @@
-import { useState } from 'preact/hooks'
-import preactLogo from './assets/preact.svg'
-import viteLogo from '/vite.svg'
-import './app.css'
+import { Route, Routes } from 'react-router-dom'
+import { Suspense, lazy } from 'react'
 
-export function App() {
-  const [count, setCount] = useState(0)
+const HomePage = lazy(() => import('../pages/HomePage/HomePage'))
+const MoviesPage = lazy(() => import('../pages/MoviesPage/MoviesPage'))
 
+import Loader from '../components/Loader/Loader'
+// import css from './app.module.css'
+
+import NotFoundPage from '../pages/NotFoundPage/NotFoundPage'
+import MovieDetailsPage from '../pages/MovieDetailsPage/MovieDetailsPage'
+import Navigation from '../components/Navigation/Navigation'
+
+function App() {
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} class="logo" alt="Vite logo" />
-        </a>
-        <a href="https://preactjs.com" target="_blank">
-          <img src={preactLogo} class="logo preact" alt="Preact logo" />
-        </a>
-      </div>
-      <h1>Vite + Preact</h1>
-      <div class="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/app.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p class="read-the-docs">
-        Click on the Vite and Preact logos to learn more
-      </p>
-    </>
+    <div>
+      <header >
+        <Navigation />
+      </header>
+      <main>
+        <Suspense fallback={<Loader />}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/movies" element={<MoviesPage />} />
+            <Route path="/movies/:movieId/*" element={<MovieDetailsPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </Suspense>
+      </main>
+    </div>
   )
 }
+
+export default App
