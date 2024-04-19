@@ -48,7 +48,7 @@ export const searchMovies = async (searchQuery) => {
     }
 };
 
-export const moviesCredits = async (movieId) => {
+export const movieCredits = async (movieId) => {
     const url = `https://api.themoviedb.org/3/movie/${movieId}/credits?language=en-US`;
     const options = {
       headers: {
@@ -65,7 +65,7 @@ export const moviesCredits = async (movieId) => {
     }
   }
 
-export const moviesReviews = async (movieId) => {
+export const movieReviews = async (movieId) => {
     const url = `https://api.themoviedb.org/3/movie/${movieId}/reviews?language=en-US&page=1`;
     const options = {
         headers: {

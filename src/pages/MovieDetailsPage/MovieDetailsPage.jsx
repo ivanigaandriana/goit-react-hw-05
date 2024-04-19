@@ -8,15 +8,15 @@ import {
   useParams,
 } from 'react-router-dom'
 import {
-  moviesCredits,
+  movieCredits,
   moviesDetails,
-  moviesReviews,
+  movieReviews,
 } from '../../reserv/api'
 
 import css from './MovieDetailsPage.module.css'
-import MoviesCast from '../../components/MoviesCast/MoviesCast'
+import MovieCast from '../../components/MovieCast/MovieCast'
 // import Loader from '../../components/Loader/Loader'
-import MoviesReviews from '../../components/MoviesReviews/MoviesReviews'
+import MovieReviews from '../../components/MovieReviews/MovieReviews'
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
@@ -40,7 +40,7 @@ const MovieDetailsPage = () => {
   }, [movieId]);
   const handleClickCast = async () => {
     try {
-      const castData = await moviesCredits(movieId);
+      const castData = await movieCredits(movieId);
       setCast(castData.cast);
     } catch (error) {
       console.error('Error fetching movie cast:', error);
@@ -49,7 +49,7 @@ const MovieDetailsPage = () => {
 
   const handleClickReviews = async () => {
     try {
-      const reviewsData = await moviesReviews(movieId);
+      const reviewsData = await movieReviews(movieId);
       setReviews(reviewsData.results);
     } catch (error) {
       console.error('Error fetching movie reviews:', error);
@@ -105,7 +105,7 @@ const MovieDetailsPage = () => {
                 Cast
               </NavLink>
               <Routes>
-                <Route path={`cast`} element={<MoviesCast cast={cast} />} />
+                <Route path={`cast`} element={<MovieCast cast={cast} />} />
               </Routes>
             </li>
             <li>
@@ -113,7 +113,7 @@ const MovieDetailsPage = () => {
                 Reviews
               </NavLink>
               <Routes>
-                <Route path={`reviews`} element={<MoviesReviews reviews={reviews} />} />
+                <Route path={`reviews`} element={<MovieReviews reviews={reviews} />} />
               </Routes>
             </li>
           </ul>
