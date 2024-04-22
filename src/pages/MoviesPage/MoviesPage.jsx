@@ -6,27 +6,23 @@ import ErrorMessage from '../../components/ErrorMessage/ErrorMessage'
 import MovieList from '../../components/MovieList/MovieList '
 import SearchForm from '../../components/SearchForm/SearchForm'
 const MoviesPage = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  useEffect(() => {
-    const query = searchParams.get('query');
-    if (query) {
-      setSearchQuery(query);
-    }
-  }, [searchParams]);
 
   useEffect(() => {
     const handleSearch = async () => {
       try {
-        if (!searchQuery) return;
-        setIsLoading(true);
-        const result = await searchMovies(searchQuery);
-        setSearchResults(result);
-        setIsLoading(false);
+        const query = searchParams.get('query');
+        if (query) {
+          setIsLoading(true);
+          const result = await searchMovies(query);
+          setSearchResults(result);
+          setIsLoading(false);
+        }
       } catch (error) {
         setError(error);
         setIsLoading(false);
@@ -34,11 +30,11 @@ const MoviesPage = () => {
     };
 
     handleSearch();
-  }, [searchQuery]);
+  }, [searchParams]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    searchParams.set('query', searchQuery);
+    setSearchParams(searchParams).set('query', searchQuery);
   };
 
   const handleKeyDown = (e) => {

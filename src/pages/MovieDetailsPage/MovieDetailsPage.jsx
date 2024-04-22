@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useRef, useState } from 'react'
+import { useState, useEffect, useRef } from 'react';
 import {
   Link,
   NavLink,
@@ -6,17 +6,16 @@ import {
   Routes,
   useLocation,
   useParams,
-} from 'react-router-dom'
+} from 'react-router-dom';
 import {
   movieCredits,
   moviesDetails,
   movieReviews,
-} from '../../reserv/api'
+} from '../../reserv/api';
 
-import css from './MovieDetailsPage.module.css'
-import MovieCast from '../../components/MovieCast/MovieCast'
-// import Loader from '../../components/Loader/Loader'
-import MovieReviews from '../../components/MovieReviews/MovieReviews'
+import css from './MovieDetailsPage.module.css';
+import MovieCast from '../../components/MovieCast/MovieCast';
+import MovieReviews from '../../components/MovieReviews/MovieReviews';
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
@@ -24,7 +23,7 @@ const MovieDetailsPage = () => {
   const [cast, setCast] = useState(null);
   const [reviews, setReviews] = useState(null);
   const location = useLocation();
-  // const backLinkRef = useRef(location.state ?? '/');
+  const prevLocation = useRef(location.pathname);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,6 +37,7 @@ const MovieDetailsPage = () => {
 
     fetchData();
   }, [movieId]);
+
   const handleClickCast = async () => {
     try {
       const castData = await movieCredits(movieId);
@@ -55,13 +55,12 @@ const MovieDetailsPage = () => {
       console.error('Error fetching movie reviews:', error);
     }
   };
-  const defaultImg = 'https://dl-media.viber.com/10/share/2/long/vibes/icon/image/0x0/95e0/5688fdffb84ff8bed4240bcf3ec5ac81ce591d9fa9558a3a968c630eaba195e0.jpg';
 
-  
+  const defaultImg = 'https://dl-media.viber.com/10/share/2/long/vibes/icon/image/0x0/95e0/5688fdffb84ff8bed4240bcf3ec5ac81ce591d9fa9558a3a968c630eaba195e0.jpg';
 
   return (
     <div>
-      <Link className={css.goBack} to="/">
+      <Link className={css.goBack} to={prevLocation.current}>
         ⬅️ Go back
       </Link>
       {movieDetails && (
