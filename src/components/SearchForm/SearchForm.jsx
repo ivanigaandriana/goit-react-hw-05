@@ -1,29 +1,27 @@
-import css from './SearchForm.module.css';
+import css from './SearchForm.module.css'
 
-const SearchForm = ({
+const SearchMoviesForm = ({
   searchQuery,
   setSearchQuery,
   handleSearch,
+  handleSubmit,
   handleKeyDown,
 }) => {
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Щоб уникнути перезавантаження сторінки
-    handleSearch();
-  };
-
   return (
     <div className={css.searchContainer}>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
-        <button type="submit">Search</button>
-      </form>
+      <input
+        className={css.inputSearch}
+        type="text"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        onKeyDown={handleKeyDown}
+        onSubmit={handleSubmit}
+      />
+      <button className={css.buttonSearch} onClick={handleSearch}>
+        Search
+      </button>
     </div>
-  );
-};
+  )
+}
 
-export default SearchForm;
+export default SearchMoviesForm

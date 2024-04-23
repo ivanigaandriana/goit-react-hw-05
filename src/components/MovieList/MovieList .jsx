@@ -2,8 +2,13 @@ import { Link, useLocation } from 'react-router-dom'
 import css from './MovieList.module.css'
 
 const MovieList = ({ movies }) => {
-  // console.log(movies)
-  const location = useLocation()
+  // Перевірка, чи масив movies не є null або не визначений
+  if (!movies) {
+    return null; // Або будь-який інший вміст, який ви вважаєте за потрібне
+  }
+
+  // Решта коду компонента
+  const location = useLocation();
 
   return (
     <ul>
@@ -21,7 +26,7 @@ const MovieList = ({ movies }) => {
         </li>
       ))}
     </ul>
-  )
-}
+  );
+};
 
-export default MovieList
+export default MovieList;
