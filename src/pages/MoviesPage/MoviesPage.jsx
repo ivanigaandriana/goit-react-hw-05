@@ -16,6 +16,7 @@ const MoviesPage = () => {
     try {
       setIsLoading(true)
       const result = await searchMovies(searchQuery)
+      console.log(result)
       setSearchResults(result)
       setIsLoading(false)
     } catch (error) {
