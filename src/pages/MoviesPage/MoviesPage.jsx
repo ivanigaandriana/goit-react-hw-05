@@ -7,50 +7,40 @@ import MovieList from '../../components/MovieList/MovieList '
 import SearchForm from '../../components/SearchForm/SearchForm'
 
 const MoviesPage = () => {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [searchResults, setSearchResults] = useState([])
+const [searchResults, setSearchResults] = useState([])
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState(false)
+  const [error, setError] = useState(null)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const query = searchParams.get('query');
 
-  const handleSearch = async () => {
-    try {
-      setIsLoading(true)
-      const result = await searchMovies(searchQuery)
-      console.log(result)
-      setSearchResults(result)
-      setIsLoading(false)
-    } catch (error) {
-      setError(error)
-      setIsLoading(false)
+  const handleSubmit = async (query) => {
+    if (!query) return;
+    try{
+      setIsLoading(true);
+      const data = await searchMovies(query);
+      setSearchResults(data);
+      setIsLoading(false);
+      setSearchParams({ query: query });
+    }catch(error){
+      setError(error.message);
+      setIsLoading(false);
     }
-  }
-  const handleSubmit = (e) => {
-    setSearchQuery(e.target.value)
-    handleSearch()
-  }
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      handleSearch()
-    }
-  }
-
-  return (
-    <div>
-      <h1></h1>
+        };
+  
+  // const onSetSearchQuery = (searchWord) => {
+  //    setSearchParams({ query: searchWord });
+  //  }
+return (
+    <div> 
       <SearchForm
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        handleSearch={handleSearch}
-        handleSubmit={handleSubmit}
-        handleKeyDown={handleKeyDown}
+        onFormSubmit={handleSubmit}
       />
+      <MovieList movies={searchResults} />
       {isLoading && <Loader />}
       {error && <ErrorMessage error={error} />}
-      <ul>
-        <MovieList movies={searchResults} />
-      </ul>
+     
     </div>
   )
 }
 
-export default MoviesPage
+export default MoviesPage;
