@@ -7,16 +7,22 @@ import MovieList from '../../components/MovieList/MovieList '
 import SearchForm from '../../components/SearchForm/SearchForm'
 
 const MoviesPage = () => {
-const [searchResults, setSearchResults] = useState([])
+const [searchResults, setSearchResults] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
   const [searchParams, setSearchParams] = useSearchParams()
   const query = searchParams.get('query');
 
-  const handleSubmit = async (query) => {
+
+    useEffect(() => {
+
     if (!query) return;
+    async function handleSubmit() {
+      setError(false)
+      setIsLoading(true)
+    
     try{
-      setIsLoading(true);
+
       const data = await searchMovies(query);
       setSearchResults(data);
       setIsLoading(false);
@@ -25,15 +31,16 @@ const [searchResults, setSearchResults] = useState([])
       setError(error.message);
       setIsLoading(false);
     }
-        };
-  
-  // const onSetSearchQuery = (searchWord) => {
-  //    setSearchParams({ query: searchWord });
-  //  }
+        }
+        handleSubmit();
+      }, [query]);
+  const onSetSearchQuery = (searchWord) => {
+     setSearchParams({ query: searchWord });
+   }
 return (
     <div> 
       <SearchForm
-        onFormSubmit={handleSubmit}
+        onFormSubmit={onSetSearchQuery}
       />
       <MovieList movies={searchResults} />
       {isLoading && <Loader />}

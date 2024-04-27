@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { movieCredits } from '../../reserv/api';
+import css from './MovieCast.module.css';
 
 const MovieCast = () => {
   const { movieId } = useParams();
@@ -26,9 +27,10 @@ const MovieCast = () => {
   return (
     <div>
       <h2>Cast</h2>
-      <ul>
+      <ul className={css.cast}>
         {cast.map((actor) => (
-          <li key={actor.id}>
+          <li key={actor.id}
+          className={css.castList}>
             <img
               src={`https://image.tmdb.org/t/p/w500${actor.profile_path}`}
               alt={actor.name}

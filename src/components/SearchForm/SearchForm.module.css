@@ -16,4 +16,11 @@
     margin: 10px 0;
     width: 100px;
     height: 30px;
+    padding: 20px;
+    background-color: aliceblue;
+  }
+  button:hover,
+  button:focus {
+    background-color: aqua;
+    transition-duration: 0.25s;
   }

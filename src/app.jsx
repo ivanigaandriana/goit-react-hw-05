@@ -13,7 +13,7 @@ import Navigation from './components/Navigation/Navigation'
 
 function App() {
   return (
-    <div>
+    <div >
       <header >
         <Navigation />
       </header>

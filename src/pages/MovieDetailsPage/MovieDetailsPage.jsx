@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense, lazy } from 'react';
 import {
   Link,
-  NavLink,
   Route,
   Routes,
   useLocation,
@@ -14,52 +13,40 @@ import {
 } from '../../reserv/api';
 
 import css from './MovieDetailsPage.module.css';
-import MovieCast from '../../components/MovieCast/MovieCast';
-import MovieReviews from '../../components/MovieReviews/MovieReviews';
+const MovieCast = lazy(() =>import('../../components/MovieCast/MovieCast'));
+const MovieReviews = lazy(()=>import ('../../components/MovieReviews/MovieReviews'));
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState(null);
-  const [cast, setCast] = useState(null);
-  const [reviews, setReviews] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const location = useLocation();
-  const prevLocation = useRef(location.pathname);
+  const prevLocation = useRef(location.state ?? '/movies');
 
+  
   useEffect(() => {
+    if (!movieId) return;
     const fetchData = async () => {
+      setError(null);
+      setLoading(true);
       try {
         const details = await moviesDetails(movieId);
         setMovieDetails(details);
       } catch (error) {
-        console.error('Error fetching movie details:', error);
+        setError(error);
+      } finally {
+        setLoading(false);
       }
     };
-
     fetchData();
   }, [movieId]);
 
-  const handleClickCast = async () => {
-    try {
-      const castData = await movieCredits(movieId);
-      setCast(castData.cast);
-    } catch (error) {
-      console.error('Error fetching movie cast:', error);
-    }
-  };
-
-  const handleClickReviews = async () => {
-    try {
-      const reviewsData = await movieReviews(movieId);
-      setReviews(reviewsData.results);
-    } catch (error) {
-      console.error('Error fetching movie reviews:', error);
-    }
-  };
-
+  // Define a default image URL
   const defaultImg = 'https://dl-media.viber.com/10/share/2/long/vibes/icon/image/0x0/95e0/5688fdffb84ff8bed4240bcf3ec5ac81ce591d9fa9558a3a968c630eaba195e0.jpg';
 
   return (
-    <div>
+    <div className='container'>
       <Link className={css.goBack} to={prevLocation.current}>
         ⬅️ Go back
       </Link>
@@ -69,6 +56,7 @@ const MovieDetailsPage = () => {
             <ul className={css.movieDetailsList}>
               <li>
                 <img
+                  className={css.movieDetailsImg}
                   src={movieDetails.backdrop_path ? `https://image.tmdb.org/t/p/w500${movieDetails.backdrop_path}` : defaultImg}
                   width={250}
                   alt="poster"
@@ -98,26 +86,20 @@ const MovieDetailsPage = () => {
             </ul>
           </div>
           <div className={css.additionalInfo}>Additional information</div>
-          <ul>
-            <li>
-              <NavLink className={css.link} to={`cast`} onClick={handleClickCast}>
-                Cast
-              </NavLink>
-              <Routes>
-                <Route path={`cast`} element={<MovieCast cast={cast} />} />
-              </Routes>
-            </li>
-            <li>
-              <NavLink className={css.link} to={`reviews`} onClick={handleClickReviews}>
-                Reviews
-              </NavLink>
-              <Routes>
-                <Route path={`reviews`} element={<MovieReviews reviews={reviews} />} />
-              </Routes>
-            </li>
-          </ul>
+          <div className={css.additionalInfoList}>
+            <Link className={css.link} to='cast'>Cast</Link>
+            <Link className={css.link} to='reviews'>Reviews</Link>
+          </div>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Routes>
+              <Route className={css.cast} path='cast' element={<MovieCast />} />
+              <Route path='reviews' element={<MovieReviews />} />
+            </Routes>
+          </Suspense>
         </div>
       )}
+      {loading && <div>Loading...</div>}
+      {error && <div>Error: {error.message}</div>}
     </div>
   );
 };
